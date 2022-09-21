@@ -1,4 +1,4 @@
-#' Estimate a causal mediation model
+#' bayesgmed: Estimate a causal mediation effects
 #'
 #' Estimates a Bayesian causal mediation model using g-formula approach though Stan.
 #' @export
@@ -6,7 +6,7 @@
 #' @param outcome a character string indicating the name of the outcome variable.
 #' @param treat a character string indicating the name of the treatment variable. The treatment can be either binary (integer or a two-valued factor) or continuous (numeric).
 #' @param mediator a character string indicating the name of the mediator variable.
-#' @param mediator a character vector indicating the name of the confounding variables.
+#' @param covariates a character vector indicating the name of the confounding variables.
 #' @param priors A list of named values to be used as the prior scale parameters. See details.
 #' @param dist.y a character string indicating the family distribution of the outcome.  E.g., dist.y = "bernoulli" will fit
 #' a logistic regression the outcome.
@@ -22,12 +22,23 @@
 #'
 #' @author Belay Birlie Yimer \email{belaybirlie.yimer@manchester.ac.uk}
 #'
-#' @details Draw samples from the joint posterior distribution of a
-#' mediation model using Stan.
+#' @details Bayesgmed is the main function for estimating causal mediation effects
+#' from several types of data with in the Bayesian framework. We followed the potential
+#' outcome framework for effects definition and the package uses the rstan utility functions
+#' for exploring the posterior distribution.
+#'
+#' ## priors
+#' Users may pass a list of named values for the priors argument. The values will be used to define
+#' the scale parameter of the respective prior distributions. This list may specify some or all of the
+#' following parameters:
+#' priors <- list(
+#'   scale_m = 2.5, scale_y = 2.5,
+#'   location_m = 0, location_y = 0,
+#'  scale_sd_y = 2.5, scale_sd_m = 2.5)
 #'
 #'
 
-bayes_gmed <- function(outcome, mediator, treat,covariates =NULL,
+bayesgmed <- function(outcome, mediator, treat,covariates =NULL,
                      dist.y = "continuous", dist.m ="continuous",
                      link.y ="identity", link.m ="identity",
                      data,  control.value = 0,
