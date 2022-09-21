@@ -56,10 +56,13 @@ generated quantities {
   // row index to be sampled for bootstrap
   int row_i;
   // calculate NDE in the bootstrapped sample
-  real NDE1 = 0;
-  real NDE2 = 0;
-  real NIE1 = 0;
-  real NIE2 = 0;
+  real NDE_control = 0;
+  real NDE_treated = 0;
+  real NIE_control = 0;
+  real NIE_treated = 0;
+  real TE = 0;
+  real ANDE = 0;
+  real ANIE = 0;
   vector[N] M_a0;
   vector[N] M_a1;
   vector[N] Y_a1Ma0;
@@ -80,10 +83,13 @@ generated quantities {
     Y_a1Ma1[n] = bernoulli_logit_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA);
     Y_a0Ma1[n] = bernoulli_logit_rng(X[row_i] * alphaZ + M_a1[n] * alphaM);
     // add contribution of this observation to the bootstrapped NDE
-    NDE1 = NDE1 + (Y_a1Ma0[n] - Y_a0Ma0[n])/N;//control
-    NDE2 = NDE2 + (Y_a1Ma1[n] - Y_a0Ma1[n])/N;//treated
-    //natural indirect effect Yi(t, Mi(1)) ??? Yi(t, Mi(0))
-    NIE1 = NIE1 + (Y_a1Ma1[n] - Y_a1Ma0[n])/N;//treated
-    NIE2 = NIE2 + (Y_a0Ma1[n] - Y_a0Ma0[n])/N;//control
+    NDE_control = NDE_control + (Y_a1Ma0[n] - Y_a0Ma0[n])/N;//control
+    NDE_treated = NDE_treated + (Y_a1Ma1[n] - Y_a0Ma1[n])/N;//treated
+    //natural indirect effect Yi(t, Mi(1)) - Yi(t, Mi(0))
+    NIE_treated = NIE_treated + (Y_a1Ma1[n] - Y_a1Ma0[n])/N;//treated
+    NIE_control = NIE_control + (Y_a0Ma1[n] - Y_a0Ma0[n])/N;//control
+    TE = NDE_control + NIE_treated;
+    ANDE = (NDE_control + NDE_treated)/2;
+    ANIE = (NIE_control + NIE_treated)/2;
   }
 }

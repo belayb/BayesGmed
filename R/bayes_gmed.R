@@ -48,7 +48,8 @@ bayes_gmed <- function(outcome, mediator, treat,covariates =NULL,
   if (is.null(priors$scale_y)) priors$scale_y <- default_priors$scale_y
   if (is.null(priors$location_m)) priors$location_m <- default_priors$location_m
   if (is.null(priors$location_y)) priors$location_y <- default_priors$location_y
-  if (is.null(priors$scale_sd_y)) priors$scale_sd_y <- default_priors$scale_sd_y
+  if (dist.y == "continuous"& is.null(priors$scale_sd_y)) priors$scale_sd_y <- default_priors$scale_sd_y
+  if (dist.m == "continuous" & is.null(priors$scale_sd_m)) priors$scale_sd_m <- default_priors$scale_sd_m
 
   # Create a data list for Stan
   stan_data <- list()
@@ -58,7 +59,7 @@ bayes_gmed <- function(outcome, mediator, treat,covariates =NULL,
   stan_data$Y = data[,outcome]
   stan_data$P = ncol(stan_data$X)
   stan_data$N <- length(stan_data$Y)
-  ld <- append(ld, priors)
+  stan_data <- append(stan_data, priors)
 
 
   # Warn users who still use INT option
