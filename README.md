@@ -39,6 +39,6 @@ devtools::install_github("belayb/BayesGmed", args = "--preclean")
 ## Contributors
 
 Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK.
-Other co-authors: Meghna Jani, Goran Nenadic, Mark Lunt, William G. Dixon.
+Other co-authors: Mark Lunt, John McBeth.
 
 Pull requests and GitHub issues are welcome.
