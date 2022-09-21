@@ -2,7 +2,7 @@
 
 # BayesGmed
 
-The R package **BayesGmed** implements parametric mediation analysis using the Bayesian g-formula approch.
+The R package **BayesGmed** implements parametric mediation analysis using the Bayesian g-formula approch (based on 10.5281/zenodo.1285275, 10.1177/0962280217729844).
 In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis.
 
 The package’s source code is hosted on [GitHub](https://github.com/belayb/BayesGmed/). More information can be found on the **BayesGmed**’s Vignette .
