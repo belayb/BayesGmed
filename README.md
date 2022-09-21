@@ -36,11 +36,9 @@ Then proceed to install **BayesGmed** from GitHub:
 devtools::install_github("belayb/BayesGmed", args = "--preclean")
 ```
 
-# Information
+## Contributors
 
-Please contact the author of the package for questions and suggestions.
-I recommend creating a new issue on GitHub.
+Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK.
+Other co-authors: Meghna Jani, Goran Nenadic, Mark Lunt, William G. Dixon.
 
-# Citation
-
-If you use this software, please cite it:
+Pull requests and GitHub issues are welcome.
