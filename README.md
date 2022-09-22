@@ -33,7 +33,7 @@ install.packages("devtools")
 Then proceed to install **BayesGmed** from GitHub:
 
 ``` r
-devtools::install_github("belayb/BayesGmed", args = "--preclean")
+devtools::install_github("belayb/BayesGmed")
 ```
 
 ## Contributors
