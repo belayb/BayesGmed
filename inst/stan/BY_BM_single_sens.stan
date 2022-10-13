@@ -71,7 +71,7 @@ model {
   for (n in 1:N){
     //contribution if U = 0
     ll_0 = log_inv_logit(eta_mu0[n]) * M[n]+log1m_inv_logit(eta_mu0[n]) * (1 - M[n])+
-           log_inv_logit(eta_yu0[n]) * Y[n]+log1m_inv_logit(eta_Yu0[n]) * (1 - Y[n])+
+           log_inv_logit(eta_yu0[n]) * Y[n]+log1m_inv_logit(eta_yu0[n]) * (1 - Y[n])+
            log1m_inv_logit(eta_u[n]);
     
     //contribution if U = 0
