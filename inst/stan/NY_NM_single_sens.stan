@@ -119,10 +119,10 @@ generated quantities {
     M_a1[n] = normal_rng(X[row_i] * betaZ + betaA + U[n] * betaU, scale_sd_m);
     // sample Y_(a=1, M=M_0) and Y_(a=0, M=M_0) 
     Y_a1Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA + U[n] * alphaU, scale_sd_y); 
-    Y_a0Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + U[n] * alphaU, sigma_y);
+    Y_a0Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + U[n] * alphaU, scale_sd_y);
     // sample Y_(a=1, M=M_1) and Y_(a=0, M=M_1) 
     Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA + U[n] * alphaU, scale_sd_y); 
-    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + U[n] * alphaU, sigma_y);
+    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + U[n] * alphaU, scale_sd_y);
     // add contribution of this observation to the bootstrapped NDE
     NDE_control = NDE_control + (Y_a1Ma0[n] - Y_a0Ma0[n])/N;//control
     NDE_treated = NDE_treated + (Y_a1Ma1[n] - Y_a0Ma1[n])/N;//treated
