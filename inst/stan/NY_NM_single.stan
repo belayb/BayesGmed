@@ -30,8 +30,8 @@ parameters {
   // regression coefficients (mediator model)
   vector[P + 1] beta;
   // residual standard devation for the mediator model
-  real<lower = 0> sigma_m;
-  real<lower = 0> sigma_y;
+  real<lower = 0> scale_sd_m;
+  real<lower = 0> scale_sd_y;
 
 }
 
@@ -49,12 +49,12 @@ model {
   alpha ~ multi_normal(location_m, scale_m);
   beta ~ multi_normal(location_y, scale_y);
   // prior for the residual standrd devation of the mediator model
-  target += student_t_lpdf(sigma_m | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
-  target += student_t_lpdf(sigma_y | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
+  target += student_t_lpdf(scale_sd_m | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
+  target += student_t_lpdf(scale_sd_y | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
 
   // likelihoods
-  M ~ normal (X * betaZ + A * betaA, sigma_m);
-  Y ~ normal (X * alphaZ + A * alphaA + Mv * alphaM, sigma_y);
+  M ~ normal (X * betaZ + A * betaA, scale_sd_m);
+  Y ~ normal (X * alphaZ + A * alphaA + Mv * alphaM, scale_sd_y);
 }
 generated quantities {
   // row index to be sampled for bootstrap
@@ -77,15 +77,15 @@ generated quantities {
     // sample baseline covariates
     row_i = categorical_rng(boot_probs);
     // sample Ma where a = 0
-    M_a0[n] = normal_rng (X[row_i] * betaZ, sigma_m);
+    M_a0[n] = normal_rng (X[row_i] * betaZ, scale_sd_m);
     // sample Ma where a = 1
-    M_a1[n] = normal_rng (X[row_i] * betaZ + betaA, sigma_m);
+    M_a1[n] = normal_rng (X[row_i] * betaZ + betaA, scale_sd_m);
     // sample Y_(a=1, M=M_0) and Y_(a=0, M=M_0)
-    Y_a1Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA, sigma_y);
-    Y_a0Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM, sigma_y);
+    Y_a1Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA, scale_sd_y);
+    Y_a0Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM, scale_sd_y);
     // sample Y_(a=1, M=M_1) and Y_(a=0, M=M_1)
-    Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA, sigma_y);
-    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM, sigma_y);
+    Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA, scale_sd_y);
+    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM, scale_sd_y);
     // add contribution of this observation to the bootstrapped NDE
     NDE_control = NDE_control + (Y_a1Ma0[n] - Y_a0Ma0[n])/N;//control
     NDE_treated = NDE_treated + (Y_a1Ma1[n] - Y_a0Ma1[n])/N;//treated

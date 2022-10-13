@@ -30,7 +30,7 @@ parameters {
   // regression coefficients (mediator model)
   vector[P + 1] beta;
   // residual standard devation for the mediator model
-  real<lower = 0> sigma;
+  real<lower = 0> scale_sd_m;
 }
 
 transformed parameters {
@@ -47,9 +47,9 @@ model {
   alpha ~ multi_normal(location_y, scale_y);
   beta ~ multi_normal(location_m, scale_m);
   // prior for the residual standrd devation of the mediator model
-  target += student_t_lpdf(sigma | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
+  target += student_t_lpdf(scale_sd_m | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
   // likelihoods
-  M ~ normal (X * betaZ + A * betaA, sigma);
+  M ~ normal (X * betaZ + A * betaA, scale_sd_m);
   Y ~ bernoulli_logit(X * alphaZ + A * alphaA + Mv * alphaM);
 }
 generated quantities {
@@ -73,9 +73,9 @@ generated quantities {
     // sample baseline covariates
     row_i = categorical_rng(boot_probs);
     // sample Ma where a = 0
-    M_a0[n] = normal_rng (X[row_i] * betaZ, sigma);
+    M_a0[n] = normal_rng (X[row_i] * betaZ, scale_sd_m);
     // sample Ma where a = 1
-    M_a1[n] = normal_rng (X[row_i] * betaZ + betaA, sigma);
+    M_a1[n] = normal_rng (X[row_i] * betaZ + betaA, scale_sd_m);
     // sample Y_(a=1, M=M_0) and Y_(a=0, M=M_0)
     Y_a1Ma0[n] = bernoulli_logit_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA);
     Y_a0Ma0[n] = bernoulli_logit_rng(X[row_i] * alphaZ + M_a0[n] * alphaM);

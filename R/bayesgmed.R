@@ -73,10 +73,7 @@ bayesgmed <- function(outcome, mediator, treat,covariates =NULL,
   stan_data <- append(stan_data, priors)
 
 
-  # Warn users who still use INT option
-  #if(match("INT", names(cl), 0L)){
-  #  warning("interaction terms is not implemented")
-  #}
+  
   if (dist.y == "continuous" & dist.m == "continuous"){
     out <- rstan::sampling(stanmodels$NY_NM_single, data = stan_data, ...)
   }

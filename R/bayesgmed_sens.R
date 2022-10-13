@@ -34,7 +34,7 @@
 #' priors <- list(
 #'   scale_m = 2.5, scale_y = 2.5,
 #'   location_m = 0, location_y = 0,
-#'   location_gamma = 0, scale_gamma = 0.5,
+#'   location_gamma = 0.5, scale_gamma = 0.5,
 #'  scale_sd_y = 2.5, scale_sd_m = 2.5)
 #'
 #'
@@ -75,6 +75,22 @@ bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
   stan_data <- append(stan_data, priors)
 
 
-  # Stan models will come here
+if (dist.y == "continuous" & dist.m == "continuous"){
+    out <- rstan::sampling(stanmodels$NY_NM_single_sens, data = stan_data, ...)
+  }
+  else if (dist.y == "binary" & dist.m == "continuous"){
+    out <- rstan::sampling(stanmodels$BY_NM_single_sens, data = stan_data, ...)
+  }
+  else if (dist.y == "binary" & dist.m == "binary"){
+    out <- rstan::sampling(stanmodels$BY_BM_single_sens, data = stan_data, ...)
+  }
+  else if (dist.y == "continuous" & dist.m == "binary"){
+    out <- rstan::sampling(stanmodels$NY_BM_single_sens, data = stan_data, ...)
+  }
+  else {
+    stop("model not supported")
+  }
+
+  return(out)
 
 }
