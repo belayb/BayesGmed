@@ -22,10 +22,10 @@
 #'
 #' @author Belay Birlie Yimer \email{belaybirlie.yimer@manchester.ac.uk}
 #'
-#' @details Bayesgmed is the main function for estimating causal mediation effects
-#' from several types of data with in the Bayesian framework. We followed the potential
-#' outcome framework for effects definition and the package uses the rstan utility functions
-#' for exploring the posterior distribution.
+#' @details Bayesgmed_sens allows one to conduct a sensetivity analysis for unmeasured confounding according
+#' to the approch proposed by McCandless LC and Somers JM (2019). This is done by by incorporating uncertainty 
+#' about unmeasured confounding in the outcome and mediator model through a prior distribution. One can control
+#' the size of unmeasured confounding by varying the values of the location and scale parameters of the prior distribution for the bias (i.e., gamma). 
 #'
 #' ## priors
 #' Users may pass a list of named values for the priors argument. The values will be used to define
