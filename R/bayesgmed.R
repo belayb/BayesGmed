@@ -63,9 +63,9 @@ bayesgmed <- function(outcome, mediator, treat,covariates =NULL,
     scale_sd_y = 2.5, scale_sd_m = 2.5
   )
   if (is.null(priors$scale_m)) priors$scale_m <- default_priors$scale_m
-    if (!is.null(priors$scale_m)&dim(priors$scale_m)[1,] != stan_data$P + 1) stop("Not all priors supplied for the mediator model")
+    if (!is.null(priors$scale_m)&dim(priors$scale_m)[1] != stan_data$P + 1) stop("Not all priors supplied for the mediator model")
   if (is.null(priors$scale_y)) priors$scale_y <- default_priors$scale_y
-      if (!is.null(priors$scale_y)&dim(priors$scale_y)[1,] != stan_data$P + 2) stop("Not all priors supplied for the outcome model")
+      if (!is.null(priors$scale_y)&dim(priors$scale_y)[1] != stan_data$P + 2) stop("Not all priors supplied for the outcome model")
   if (is.null(priors$location_m)) priors$location_m <- default_priors$location_m
         if (!is.null(priors$scale_y)&length(priors$location_m) != stan_data$P + 1) stop("Not all priors supplied for the mediator model")
   if (is.null(priors$location_y)) priors$location_y <- default_priors$location_y
