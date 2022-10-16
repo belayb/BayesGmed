@@ -38,7 +38,6 @@ devtools::install_github("belayb/BayesGmed")
 
 ## Contributors
 
-Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK.
-Other co-authors: Mark Lunt, John McBeth.
+Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK. Other co-authors: Mark Lunt, John McBeth. Stan model defination within the package are based on (https://doi.org/10.5281/zenodo.1285276).
 
 Pull requests and GitHub issues are welcome.

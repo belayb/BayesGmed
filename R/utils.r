@@ -68,41 +68,41 @@
 #'
 #' @export
 bayesgmed_summary <- function(
-    mod = NULL,
+    model = NULL,
     level = .95,
     pars = c("NDE_control", "NDE_treated", "NIE_control", "NIE_treated", "ANDE", "ANIE","TE"),
     digits = 3
     ){
 
     # Check that mod is a Stanfit object
-    if (!(class(mod) == "stanfit")) stop("Model is not a stanfit object.")
+    if (!(class(model) == "stanfit")) stop("Model is not a stanfit object.")
 
     # Choose which parameters to display
-    if (is.null(pars)) pars <- mod@sim$pars_oi  # Return all parameters
+    if (is.null(pars)) pars <- model@sim$pars_oi  # Return all parameters
 
     # Obtain model summary from Stanfit
     lower_ci <- .5 - (level/2)
     upper_ci <- .5 + (level/2)
 
-    mod_sum <- rstan::summary(object = mod,
+    model_sum <- rstan::summary(object = model,
                               probs = c(lower_ci, .5, upper_ci),
                               pars = pars)$summary[,-2]
     # Clean and get post. probs
-    if (is.null(dim(mod_sum))) {  # If only one param entered
-        mod_sum <- data.frame(t(mod_sum))
-        mod_sum <- data.frame(t(apply(mod_sum, 2, round, digits = digits)))
+    if (is.null(dim(model_sum))) {  # If only one param entered
+        model_sum <- data.frame(t(model_sum))
+        model_sum <- data.frame(t(apply(model_sum, 2, round, digits = digits)))
         Names <- pars
     } else {
-        mod_sum <- data.frame(mod_sum)
-        mod_sum <- data.frame(apply(mod_sum, 2, round, digits = digits))
-        Names <- row.names(mod_sum)
+        model_sum <- data.frame(model_sum)
+        model_sum <- data.frame(apply(model_sum, 2, round, digits = digits))
+        Names <- row.names(model_sum)
         }
-    mod_sum$n_eff <- floor(mod_sum$n_eff)
-    mod_sum$Parameter <- Names
-    mod_sum <- mod_sum[,c(8,1,2,4,3,5,6,7)]
-    names(mod_sum) <- c("Parameter", "Mean", "SE", "Median",
+    model_sum$n_eff <- floor(model_sum$n_eff)
+    model_sum$Parameter <- Names
+    model_sum <- model_sum[,c(8,1,2,4,3,5,6,7)]
+    names(model_sum) <- c("Parameter", "Mean", "SE", "Median",
                         paste0(lower_ci*100, "%"), paste0(upper_ci*100, "%"),
                         "n_eff", "Rhat")
-    row.names(mod_sum) <- NULL
-    return(mod_sum)
+    row.names(model_sum) <- NULL
+    return(model_sum)
 }
