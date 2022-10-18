@@ -3,7 +3,7 @@
 # BayesGmed
 
 The R package **BayesGmed** implements parametric mediation analysis using the Bayesian g-formula approch.
-In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis.
+In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis. 
 
 The package’s source code is hosted on [GitHub](https://github.com/belayb/BayesGmed/). More information can be found on the **BayesGmed**’s Vignette .
 
@@ -34,6 +34,23 @@ Then proceed to install **BayesGmed** from GitHub:
 
 ``` r
 devtools::install_github("belayb/BayesGmed")
+```
+
+
+# Usage 
+
+The **BayesGmed** R-package currently handles continuous outcome – continuous mediator, binary outcome – binary mediator, continuous outcome – binary mediator, and binary outcome – continuous mediator. 
+
+Suppose we are interested in the causal direct and indirect effect of a single exposure $A$ on a binary outcome $Y$ where we have a single continuous mediator $M$. In addition, assume we have two confounding variables $Z=(Z_1,Z_2)$. The example_data corresponding to this scenerio is included with **BayesGmed**. 
+
+To estimate the direct and indirect of the exposure on the outcome adjusted for confounder, the anlaysis would follow as below. 
+
+``` r
+fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), dist.y = "binary",
+dist.m = "continuous", link.y = "logit", link.m = "identity", data = example_data)
+
+bayesgmed_summary(fit1)
+
 ```
 
 ## Contributors
