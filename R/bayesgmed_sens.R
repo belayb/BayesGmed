@@ -32,11 +32,13 @@
 #' the scale parameter of the respective prior distributions. This list may specify some or all of the
 #' following parameters:
 #' priors <- list(
-#'   scale_m = 2.5, scale_y = 2.5,
-#'   location_m = 0, location_y = 0,
-#'   location_gamma = 0.5, scale_gamma = 0.5,
+#'   scale_m = 2.5*diag(P_m) scale_y = 2.5*diag(P_y),
+#'   llocation_m = rep(0, P_m) location_y = rep(0, P_y),
+#'   location_gamma = rep(0.5, 4), scale_gamma = 0.5*diag(4),
 #'  scale_sd_y = 2.5, scale_sd_m = 2.5)
-#'
+#' where P_m is the number of regression parameters (including the intercept) in the mediator model and
+#' P_y is the number of regression parameters in the outcome model. Note that there are 4 bias parameters
+#' i.e., gamma). 
 #'
 
 bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
@@ -45,25 +47,9 @@ bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
                       data,  control.value = 0,
                       treat.value = 1, priors = NULL, ...){
 
-  # Check for data
+   # Check for data
   if (is.null(data)) stop("No data entered")
   if (class(data)[1] == "tbl_df") data <- as.data.frame(data)  # Allow tibbles
-
-
-  # Check priors
-  default_priors <- list(
-    scale_m = 2.5, scale_y = 2.5,
-    location_m = 0, location_y = 0,
-    location_gamma = 0, scale_gamma = 0.5,
-    scale_sd_y = 2.5, scale_sd_m = 2.5
-  )
-  if (is.null(priors$scale_m)) priors$scale_m <- default_priors$scale_m
-  if (is.null(priors$scale_y)) priors$scale_y <- default_priors$scale_y
-  if (is.null(priors$location_m)) priors$location_m <- default_priors$location_m
-  if (is.null(priors$location_y)) priors$location_y <- default_priors$location_y
-  if (dist.y == "continuous"& is.null(priors$scale_sd_y)) priors$scale_sd_y <- default_priors$scale_sd_y
-  if (dist.m == "continuous" & is.null(priors$scale_sd_m)) priors$scale_sd_m <- default_priors$scale_sd_m
-
   # Create a data list for Stan
   stan_data <- list()
   stan_data$X = cbind(1,data[,covariates])
@@ -72,9 +58,29 @@ bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
   stan_data$Y = data[,outcome]
   stan_data$P = ncol(stan_data$X)
   stan_data$N <- length(stan_data$Y)
+
+# Check priors
+  default_priors <- list(
+    scale_m = 2.5*diag(stan_data$P + 1), scale_y = 2.5*diag(stan_data$P + 2),
+    location_m = rep(0, stan_data$P + 1), location_y = rep(0, stan_data$P + 2),
+    location_gamma = rep(0.5, 4), scale_gamma = 0.5*diag(4),
+    scale_sd_y = 2.5, scale_sd_m = 2.5
+  )
+  if (is.null(priors$scale_m)) priors$scale_m <- default_priors$scale_m
+    if (!is.null(priors$scale_m)&dim(priors$scale_m)[1] != stan_data$P + 1) stop("Not all priors supplied for the mediator model")
+  if (is.null(priors$scale_y)) priors$scale_y <- default_priors$scale_y
+      if (!is.null(priors$scale_y)&dim(priors$scale_y)[1] != stan_data$P + 2) stop("Not all priors supplied for the outcome model")
+  if (is.null(priors$location_m)) priors$location_m <- default_priors$location_m
+        if (!is.null(priors$scale_y)&length(priors$location_m) != stan_data$P + 1) stop("Not all priors supplied for the mediator model")
+  if (is.null(priors$location_y)) priors$location_y <- default_priors$location_y
+          if (!is.null(priors$scale_y)&length(priors$location_y) != stan_data$P + 2) stop("Not all priors supplied for the outcome model")
+  if (dist.y == "continuous"& is.null(priors$scale_sd_y)) priors$scale_sd_y <- default_priors$scale_sd_y
+  if (dist.m == "continuous" & is.null(priors$scale_sd_m)) priors$scale_sd_m <- default_priors$scale_sd_m
+  if (is.null(priors$location_gamma)) priors$location_gamma <- default_priors$location_gamma
+  if (is.null(priors$scale_gamma)) priors$scale_gamma <- default_priors$scale_gamma
+
   stan_data <- append(stan_data, priors)
-
-
+  
 if (dist.y == "continuous" & dist.m == "continuous"){
     out <- rstan::sampling(stanmodels$NY_NM_single_sens, data = stan_data, ...)
   }
