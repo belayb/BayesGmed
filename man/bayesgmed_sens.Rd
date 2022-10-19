@@ -53,23 +53,33 @@ a logistic regression the mediator}
 An object of S4 class stanfit, with all its available methods.
 }
 \description{
-Estimates a Bayesian causal mediation model using g-formula approach though Stan.
+bayesgmed_sens is used to conduct sensetivity analysis for unmeasured confounder in mediation analysis.
 }
 \details{
-Bayesgmed_sens allows one to conduct a sensetivity analysis for unmeasured confounding according
-to the approch proposed by McCandless LC and Somers JM (2019). This is done by by incorporating uncertainty
-about unmeasured confounding in the outcome and mediator model through a prior distribution. One can control
-the size of unmeasured confounding by varying the values of the location and scale parameters of the prior distribution for the bias (i.e., gamma).
+Bayesgmed_sens allows one to conduct a sensitivity analysis for unmeasured confounding
+according to the approach proposed by McCandless LC and Somers JM (2019). This is done by incorporating
+uncertainty about unmeasured confounding in the outcome and mediator model through a prior distribution.
+One can control the size of unmeasured confounding by varying the location and scale parameters of the prior
+distribution values for the bias parameter (i.e., gamma). See the Vignette for more detail.
 \subsection{priors}{
 
 Users may pass a list of named values for the priors argument. The values will be used to define
 the scale parameter of the respective prior distributions. This list may specify some or all of the
 following parameters:
 priors <- list(
-scale_m = 2.5, scale_y = 2.5,
-location_m = 0, location_y = 0,
-location_gamma = 0.5, scale_gamma = 0.5,
+scale_m = 2.5\emph{diag(P_m) scale_y = 2.5}diag(P_y),
+llocation_m = rep(0, P_m) location_y = rep(0, P_y),
+location_gamma = rep(0.5, 4), scale_gamma = 0.5*diag(4),
 scale_sd_y = 2.5, scale_sd_m = 2.5)
+where P_m is the number of regression parameters (including the intercept) in the mediator model and
+P_y is the number of regression parameters in the outcome model. Note that there are 4 bias parameters
+i.e., gamma).
+}
+}
+\references{
+\enumerate{
+\item McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. \textbf{28}(2): p. 515-531.
+\item Comment, L., Coull, B. A., Zigler, C., & Valeri, L. (2019). Bayesian data fusion for unmeasured confounding. arXiv preprint arXiv:1902.10613.
 }
 }
 \author{

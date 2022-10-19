@@ -66,9 +66,17 @@ Users may pass a list of named values for the priors argument. The values will b
 the scale parameter of the respective prior distributions. This list may specify some or all of the
 following parameters:
 priors <- list(
-scale_m = 2.5, scale_y = 2.5,
-location_m = 0, location_y = 0,
+scale_m = 2.5\emph{diag(P_m) scale_y = 2.5}diag(P_y),
+location_m = rep(0, P_m) location_y = rep(0, P_y),
 scale_sd_y = 2.5, scale_sd_m = 2.5)
+where P_m is the number of regression parameters (including the intercept) in the mediator model and
+P_y is the number of regression parameters in the outcome model.
+}
+}
+\references{
+\enumerate{
+\item McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. \textbf{28}(2): p. 515-531.
+\item Comment, L., Coull, B. A., Zigler, C., & Valeri, L. (2019). Bayesian data fusion for unmeasured confounding. arXiv preprint arXiv:1902.10613.
 }
 }
 \author{
