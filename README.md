@@ -54,11 +54,9 @@ bayesgmed_summary(fit1)
 
 The above model assumes the following structure for the outcome and mediator model 
 
-```math
-\mbox{logit}\left( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) \right) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},
+$logit\left( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) \right) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},$
 
-\(E\left\lbrack M_{i} \middle| \left( A_{i},\mathbf{Z}_{i} \right) \right\rbrack = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i},\ \ \mbox{with}\ \epsilon_{i} \sim N(0,\ \sigma^{2}).
-```
+$E\left\lbrack M_{i} \middle| \left( A_{i},\mathbf{Z}_{i} \right) \right\rbrack = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i},\ \ \text{with}\ \epsilon_{i} \sim N(0,\ \sigma^{2}).$
 
 Note: BayesGmed currently does not handle intraction. 
 ### Priors
