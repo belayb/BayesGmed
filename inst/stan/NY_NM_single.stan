@@ -12,8 +12,8 @@ data {
   // outcome
   vector [N] Y;
   // mean of regression priors
-  vector[P + 2] location_m;
-  vector[P + 1] location_y;
+  vector[P + 1] location_m;
+  vector[P + 2] location_y;
   // variance-covariance of regression priors
   cov_matrix[P + 2] scale_y;
   cov_matrix[P + 1] scale_m;

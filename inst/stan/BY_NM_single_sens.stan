@@ -14,11 +14,11 @@ data {
   // mean of regression priors 
   vector[P + 3] location_y; 
   vector[P + 2] location_m; 
-  vector[P] location_gamma;
+  vector[4] location_gamma;
   // variance-covariance of regression priors 
   cov_matrix[P + 3] scale_y; 
   cov_matrix[P + 2] scale_m;
-  cov_matrix[P] scale_gamma;
+  cov_matrix[4] scale_gamma;
   // scale parameter for residual error 
   real<lower=0> scale_sd_m;
 }
@@ -30,7 +30,7 @@ transformed data {
 }
 parameters { 
   // regression coefficients (confounder model)
-  vector[P] gamma;
+  vector[4] gamma;
   // regression coefficients (outcome model) 
   vector[P + 3] alpha;
   // regression coefficients (mediator model) 
