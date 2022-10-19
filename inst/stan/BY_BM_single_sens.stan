@@ -12,40 +12,42 @@ data {
   // outcome
   int<lower=0,upper=1> Y[N];
   // mean of regression priors 
-  vector[P + 3] location_y; 
-  vector[P + 2] location_m; 
+  vector[P + 2] location_y; 
+  vector[P + 1] location_m; 
   vector[4] location_gamma;
   // variance-covariance of regression priors 
-  cov_matrix[P + 3] scale_y; 
-  cov_matrix[P + 2] scale_m;
+  cov_matrix[P + 2] scale_y; 
+  cov_matrix[P + 1] scale_m;
   cov_matrix[4] scale_gamma;
 }
 transformed data { 
-  // make vector of 1/N for (classical) bootstrapping 
+ // make vector of 1/N for (classical) bootstrapping 
   vector[N] boot_probs = rep_vector(1.0/N, N);
   // make vector version of M 
   vector[N] Mv = to_vector(M); //Take a note here - it not nessary 
+  // design matrix for the unmeasured confounder model
+  matrix[N, 2] Xu = append_col(rep_vector(1.0, N), A); 
 }
 parameters { 
   // regression coefficients (confounder model)
   vector[4] gamma;
   // regression coefficients (outcome model) 
-  vector[P + 3] alpha;
+  vector[P + 2] alpha;
   // regression coefficients (mediator model) 
-  vector[P + 2] beta;
+  vector[P + 1] beta;
 }
 
 transformed parameters { 
-  // you may not need all this need
   // partial M coefficient parameters 
   vector[P] betaZ = head(beta, P); 
-  real betaU = beta[P + 1];
-  real betaA = beta[P + 2];
+  real betaU = gamma[3];
+  real betaA = beta[P + 1];
   // partial Y coefficient parameters 
   vector[P] alphaZ = head(alpha, P); 
-  real alphaU = alpha[P + 1]; 
-  real alphaA = alpha[P + 2]; 
-  real alphaM = alpha[P + 3];
+  real alphaU = gamma[4]; 
+  real alphaA = alpha[P + 1]; 
+  real alphaM = alpha[P + 2];
+  real gammaU = head(gamma, 2);
 }
 model { 
   // linear predictors 
@@ -59,7 +61,7 @@ model {
   real ll_0;
   real ll_1;
   // calculate linear predictor for U = 0 case
-  eta_u = X * gamma;
+  eta_u = Xu * gammaU;
   eta_mu0 = X * betaZ + A * betaA;
   eta_yu0 = X * alphaZ + A * alphaA + Mv * alphaM;
 
