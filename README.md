@@ -88,5 +88,6 @@ Statistical methods in medical research, 2018. \textbf{27}(10): p.
 
 Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK. Co-authors: Mark Lunt, John McBeth, Marcus Beasley, and Gary J Macfarlane. Stan model defination within the package are based on Comment, Leah (2018) Causal inference with the g-formula in Stan. Zenodo.
 
+## Note
 
 The package is under devlopment. Hence, pull requests and GitHub issues are welcome. Any use of the package has to be done wth care. 
