@@ -52,8 +52,20 @@ bayesgmed_summary(fit1)
 
 ```
 
+## References 
+-  McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. \textbf{28}(2): p. 515-531.
+- Comment, L., Coull, B. A., Zigler, C., & Valeri, L. (2019). Bayesian data fusion for unmeasured confounding. arXiv preprint arXiv:1902.10613.
+- Imai, K., L. Keele, and D. Tingley, \emph{A general approach to
+causal mediation analysis.} Psychological methods, 2010. \textbf{15}(4):
+- Keil, A.P., et al., \emph{A Bayesian approach to the g-formula.}
+Statistical methods in medical research, 2018. \textbf{27}(10): p.
+3183-3204.
+
+
+
 ## Contributors
 
 Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK. Co-authors: Mark Lunt, John McBeth, Marcus Beasley, and Gary J Macfarlane. Stan model defination within the package are based on Comment, Leah (2018) Causal inference with the g-formula in Stan. Zenodo.
+
 
 Pull requests and GitHub issues are welcome.

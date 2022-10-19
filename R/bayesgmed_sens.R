@@ -1,6 +1,6 @@
 #' bayesgmed_sens: Conduct sensitivity analysis for unmeasured confounder in causal mediation analysis
 #'
-#' Estimates a Bayesian causal mediation model using g-formula approach though Stan.
+#' bayesgmed_sens is used to conduct sensetivity analysis for unmeasured confounder in mediation analysis.
 #' @export
 #' @param data A \code{data.frame} or a \code{tibble} object.
 #' @param outcome a character string indicating the name of the outcome variable.
@@ -22,11 +22,11 @@
 #'
 #' @author Belay Birlie Yimer \email{belaybirlie.yimer@manchester.ac.uk}
 #'
-#' @details Bayesgmed_sens allows one to conduct a sensetivity analysis for unmeasured confounding according
-#' to the approch proposed by McCandless LC and Somers JM (2019). This is done by by incorporating uncertainty 
-#' about unmeasured confounding in the outcome and mediator model through a prior distribution. One can control
-#' the size of unmeasured confounding by varying the values of the location and scale parameters of the prior distribution for the bias (i.e., gamma). 
-#'
+#' @details Bayesgmed_sens allows one to conduct a sensitivity analysis for unmeasured confounding 
+#' according to the approach proposed by McCandless LC and Somers JM (2019). This is done by incorporating 
+#' uncertainty about unmeasured confounding in the outcome and mediator model through a prior distribution. 
+#' One can control the size of unmeasured confounding by varying the location and scale parameters of the prior 
+#' distribution values for the bias parameter (i.e., gamma). See the Vignette for more detail. 
 #' ## priors
 #' Users may pass a list of named values for the priors argument. The values will be used to define
 #' the scale parameter of the respective prior distributions. This list may specify some or all of the
@@ -40,6 +40,9 @@
 #' P_y is the number of regression parameters in the outcome model. Note that there are 4 bias parameters
 #' i.e., gamma). 
 #'
+#' @references 
+#' 1. McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. \textbf{28}(2): p. 515-531.
+#' 2. Comment, L., Coull, B. A., Zigler, C., & Valeri, L. (2019). Bayesian data fusion for unmeasured confounding. arXiv preprint arXiv:1902.10613.
 
 bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
                       dist.y = "continuous", dist.m ="continuous",
@@ -61,9 +64,9 @@ bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
 
 # Check priors
   default_priors <- list(
-    scale_m = 2.5*diag(stan_data$P + 1), scale_y = 2.5*diag(stan_data$P + 2),
-    location_m = rep(0, stan_data$P + 1), location_y = rep(0, stan_data$P + 2),
-    location_gamma = rep(0.5, 4), scale_gamma = 0.5*diag(4),
+    scale_m = 2.5*diag(stan_data$P + 2), scale_y = 2.5*diag(stan_data$P + 3),
+    location_m = rep(0, stan_data$P + 2), location_y = rep(0, stan_data$P + 3),
+    location_gamma = rep(0.5, stan_data$P), scale_gamma = 0.5*diag(stan_data$P),
     scale_sd_y = 2.5, scale_sd_m = 2.5
   )
   if (is.null(priors$scale_m)) priors$scale_m <- default_priors$scale_m
