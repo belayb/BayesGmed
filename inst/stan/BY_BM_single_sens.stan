@@ -47,7 +47,7 @@ transformed parameters {
   real alphaU = gamma[4]; 
   real alphaA = alpha[P + 1]; 
   real alphaM = alpha[P + 2];
-  real gammaU = head(gamma, 2);
+  vector[2] gammaU = head(gamma, 2);
 }
 model { 
   // linear predictors 
