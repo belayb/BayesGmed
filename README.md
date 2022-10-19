@@ -45,6 +45,7 @@ Suppose we are interested in the causal direct and indirect effect of a single e
 To estimate the direct and indirect of the exposure on the outcome adjusted for confounder, the anlaysis would follow as below. 
 
 ``` r
+data(example_data)
 fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), dist.y = "binary",
 dist.m = "continuous", link.y = "logit", link.m = "identity", data = example_data)
 
