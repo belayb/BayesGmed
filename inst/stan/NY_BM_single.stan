@@ -17,6 +17,8 @@ data {
   // variance-covariance of regression priors
   cov_matrix[P + 2] scale_y;
   cov_matrix[P + 1] scale_m;
+  // scale parameter for residual error 
+  real<lower=0> scale_sd_y;
 }
 transformed data {
   // make vector of 1/N for (classical) bootstrapping
@@ -30,7 +32,7 @@ parameters {
   // regression coefficients (mediator model)
   vector[P + 1] beta;
   // residual standard devation for the outcome model
-  real<lower = 0> scale_sd_y;
+  real<lower = 0> sigma_y;
 }
 
 transformed parameters {
@@ -47,10 +49,10 @@ model {
   alpha ~ multi_normal(location_y, scale_y);
   beta ~ multi_normal(location_m, scale_m);
   // prior for the residual standrd devation of the outcome model
-  target += student_t_lpdf(scale_sd_y | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
+  target += normal_lpdf(sigma_y | 0, scale_sd_y) - normal_lcdf(0 | 0, scale_sd_y);
   // likelihoods
   M ~ bernoulli_logit (X * betaZ + A * betaA);
-  Y ~ normal (X * alphaZ + A * alphaA + Mv * alphaM , scale_sd_y);
+  Y ~ normal (X * alphaZ + A * alphaA + Mv * alphaM , sigma_y);
 }
 generated quantities {
   // row index to be sampled for bootstrap
@@ -77,11 +79,11 @@ generated quantities {
     // sample Ma where a = 1
     M_a1[n] = bernoulli_logit_rng (X[row_i] * betaZ + betaA);
     // sample Y_(a=1, M=M_0) and Y_(a=0, M=M_0)
-    Y_a1Ma0[n] = normal_rng (X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA, scale_sd_y);
-    Y_a0Ma0[n] = normal_rng (X[row_i] * alphaZ + M_a0[n] * alphaM, scale_sd_y);
+    Y_a1Ma0[n] = normal_rng (X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA, sigma_y);
+    Y_a0Ma0[n] = normal_rng (X[row_i] * alphaZ + M_a0[n] * alphaM, sigma_y);
     // sample Y_(a=1, M=M_1) and Y_(a=0, M=M_1)
-    Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA, scale_sd_y);
-    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM, scale_sd_y);
+    Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA, sigma_y);
+    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM, sigma_y);
     // add contribution of this observation to the bootstrapped NDE
     NDE_control = NDE_control + (Y_a1Ma0[n] - Y_a0Ma0[n])/N;//control
     NDE_treated = NDE_treated + (Y_a1Ma1[n] - Y_a0Ma1[n])/N;//treated

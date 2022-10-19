@@ -66,7 +66,7 @@ bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
   default_priors <- list(
     scale_m = 2.5*diag(stan_data$P + 2), scale_y = 2.5*diag(stan_data$P + 3),
     location_m = rep(0, stan_data$P + 2), location_y = rep(0, stan_data$P + 3),
-    location_gamma = rep(0.5, stan_data$P), scale_gamma = 0.5*diag(stan_data$P),
+    location_gamma = rep(0.5, 4), scale_gamma = 0.5*diag(4),
     scale_sd_y = 2.5, scale_sd_m = 2.5
   )
   if (is.null(priors$scale_m)) priors$scale_m <- default_priors$scale_m

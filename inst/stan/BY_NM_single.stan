@@ -17,6 +17,8 @@ data {
   // variance-covariance of regression priors
   cov_matrix[P + 2] scale_y;
   cov_matrix[P + 1] scale_m;
+   // scale parameters for standard devation for the mediator model
+  real<lower = 0> scale_sd_m;
 }
 transformed data {
   // make vector of 1/N for (classical) bootstrapping
@@ -30,7 +32,7 @@ parameters {
   // regression coefficients (mediator model)
   vector[P + 1] beta;
   // residual standard devation for the mediator model
-  real<lower = 0> scale_sd_m;
+  real<lower = 0> sigma_m;
 }
 
 transformed parameters {
@@ -47,9 +49,9 @@ model {
   alpha ~ multi_normal(location_y, scale_y);
   beta ~ multi_normal(location_m, scale_m);
   // prior for the residual standrd devation of the mediator model
-  target += student_t_lpdf(scale_sd_m | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
+  target += normal_lpdf(sigma_m | 0, scale_sd_m) - normal_lcdf(0 | 0, scale_sd_m);
   // likelihoods
-  M ~ normal (X * betaZ + A * betaA, scale_sd_m);
+  M ~ normal (X * betaZ + A * betaA, sigma_m);
   Y ~ bernoulli_logit(X * alphaZ + A * alphaA + Mv * alphaM);
 }
 generated quantities {
@@ -73,9 +75,9 @@ generated quantities {
     // sample baseline covariates
     row_i = categorical_rng(boot_probs);
     // sample Ma where a = 0
-    M_a0[n] = normal_rng (X[row_i] * betaZ, scale_sd_m);
+    M_a0[n] = normal_rng (X[row_i] * betaZ, sigma_m);
     // sample Ma where a = 1
-    M_a1[n] = normal_rng (X[row_i] * betaZ + betaA, scale_sd_m);
+    M_a1[n] = normal_rng (X[row_i] * betaZ + betaA, sigma_m);
     // sample Y_(a=1, M=M_0) and Y_(a=0, M=M_0)
     Y_a1Ma0[n] = bernoulli_logit_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA);
     Y_a0Ma0[n] = bernoulli_logit_rng(X[row_i] * alphaZ + M_a0[n] * alphaM);

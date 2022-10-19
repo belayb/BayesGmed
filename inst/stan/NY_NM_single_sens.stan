@@ -19,6 +19,9 @@ data {
   cov_matrix[P + 3] scale_y; 
   cov_matrix[P + 2] scale_m;
   cov_matrix[P] scale_gamma;
+  // scale parameters for standard devation for the mediator-outcome model
+  real<lower = 0> scale_sd_m;
+  real<lower = 0> scale_sd_y;
 }
 transformed data { 
   // make vector of 1/N for (classical) bootstrapping 
@@ -34,8 +37,8 @@ parameters {
   // regression coefficients (mediator model) 
   vector[P + 2] beta;
   // residual standard devation for the mediator and outcome model
-  real<lower = 0> scale_sd_y;
-  real<lower = 0> scale_sd_m;
+  real<lower = 0> sigma_m;
+  real<lower = 0> sigma_y;
 }
 
 transformed parameters { 
@@ -71,18 +74,19 @@ model {
   beta ~ multi_normal(location_m, scale_m);
   gamma ~ multi_normal(location_gamma, scale_gamma); 
   // prior for the residual standrd devation of the outcome model 
-  target += student_t_lpdf(scale_sd_y | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
-  target += student_t_lpdf(scale_sd_m | 3, 0, 10)- 1 * student_t_lccdf(0 | 3, 0, 10);
+ // prior for the residual standrd devation of the mediator model
+  target += normal_lpdf(sigma_y | 0, scale_sd_y) - normal_lcdf(0 | 0, scale_sd_y);
+  target += normal_lpdf(sigma_m | 0, scale_sd_m) - normal_lcdf(0 | 0, scale_sd_m);
   // likelihoods
   for (n in 1:N){
     //contribution if U = 0
-    ll_0 = normal_lpdf(M[n]|eta_mu0[n], scale_sd_m)+
-           normal_lpdf(Y[n]|eta_yu0[n],scale_sd_y)+log1m_inv_logit(eta_u[n]);
+    ll_0 = normal_lpdf(M[n]|eta_mu0[n], sigma_m)+
+           normal_lpdf(Y[n]|eta_yu0[n],sigma_y)+log1m_inv_logit(eta_u[n]);
     
     //contribution if U = 0
 
-    ll_1 = normal_lpdf(M[n]|eta_mu0[n]+ betaU, scale_sd_m)+
-           normal_lpdf(Y[n]|eta_yu0[n] + alphaU,scale_sd_y)+log1m_inv_logit(eta_u[n]);
+    ll_1 = normal_lpdf(M[n]|eta_mu0[n]+ betaU, sigma_m)+
+           normal_lpdf(Y[n]|eta_yu0[n] + alphaU,sigma_y)+log1m_inv_logit(eta_u[n]);
     
     // contribution is summation over U possibilities
     
@@ -114,15 +118,15 @@ generated quantities {
     // sample U
     U[n] = bernoulli_logit_rng(X[row_i] * gamma);
     // sample Ma where a = 0 
-    M_a0[n] = normal_rng(X[row_i] * betaZ + U[n] * betaU, scale_sd_m);
+    M_a0[n] = normal_rng(X[row_i] * betaZ + U[n] * betaU, sigma_m);
     // sample Ma where a = 1 
-    M_a1[n] = normal_rng(X[row_i] * betaZ + betaA + U[n] * betaU, scale_sd_m);
+    M_a1[n] = normal_rng(X[row_i] * betaZ + betaA + U[n] * betaU, sigma_m);
     // sample Y_(a=1, M=M_0) and Y_(a=0, M=M_0) 
-    Y_a1Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA + U[n] * alphaU, scale_sd_y); 
-    Y_a0Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + U[n] * alphaU, scale_sd_y);
+    Y_a1Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + alphaA + U[n] * alphaU, sigma_y); 
+    Y_a0Ma0[n] = normal_rng(X[row_i] * alphaZ + M_a0[n] * alphaM + U[n] * alphaU, sigma_y);
     // sample Y_(a=1, M=M_1) and Y_(a=0, M=M_1) 
-    Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA + U[n] * alphaU, scale_sd_y); 
-    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + U[n] * alphaU, scale_sd_y);
+    Y_a1Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + alphaA + U[n] * alphaU, sigma_y); 
+    Y_a0Ma1[n] = normal_rng(X[row_i] * alphaZ + M_a1[n] * alphaM + U[n] * alphaU, sigma_y);
     // add contribution of this observation to the bootstrapped NDE
     NDE_control = NDE_control + (Y_a1Ma0[n] - Y_a0Ma0[n])/N;//control
     NDE_treated = NDE_treated + (Y_a1Ma1[n] - Y_a0Ma1[n])/N;//treated
