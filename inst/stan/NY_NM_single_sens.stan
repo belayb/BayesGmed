@@ -119,7 +119,7 @@ generated quantities {
     // sample baseline covariates 
     row_i = categorical_rng(boot_probs);
     // sample U
-    U[n] = bernoulli_logit_rng(X[row_i] * gamma);
+    U[n] = bernoulli_logit_rng(Xu[row_i] * gammaU);
     // sample Ma where a = 0 
     M_a0[n] = normal_rng(X[row_i] * betaZ + U[n] * betaU, sigma_m);
     // sample Ma where a = 1 
