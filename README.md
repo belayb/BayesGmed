@@ -47,7 +47,7 @@ To estimate the direct and indirect of the exposure on the outcome adjusted for 
 ``` r
 data(example_data)
 fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), dist.y = "binary",
-dist.m = "continuous", link.y = "logit", link.m = "identity", data = example_data)
+dist.m = "binary", link.y = "logit", link.m = "logit", data = example_data)
 
 bayesgmed_summary(fit1)
 
@@ -55,14 +55,14 @@ bayesgmed_summary(fit1)
 
 The above model assumes the following structure for the outcome and mediator model 
 
-$logit\left( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) \right) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},$
+$logit( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) ) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},$
 
-$E\left\lbrack M_{i} \middle| \left( A_{i},\mathbf{Z}_{i} \right) \right\rbrack = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i},\ \ \text{with}\ \epsilon_{i} \sim N(0,\ \sigma^{2}).$
+$E(M_{i} | ( A_{i},\mathbf{Z}_{i} ) ) = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i},\ \ \text{with}\ \epsilon_{i} \sim N(0,\ \sigma^{2}).$
 
 Note: BayesGmed currently does not handle intraction. 
 ### Priors
 
-Currently, a multinormal, (\mbox{MVN}(\text{location}, \text{scale})\), prior is assigned to all regression parameters where the location and scale parameters are fixed to the following default values. The user can change the location and scale parameters by passing the location and scale parameters of the priors as a list as below 
+Currently, a multinormal, $MVN(\text{location}, \text{scale})$, prior is assigned to all regression parameters where the location and scale parameters are fixed to the following default values. The user can change the location and scale parameters by passing the location and scale parameters of the priors as a list as below 
 
 ``` r
 priors <- list(scale_m = 2.5*diag(P+1), 
@@ -72,7 +72,7 @@ priors <- list(scale_m = 2.5*diag(P+1),
                scale_sd_y = 2.5, 
                scale_sd_m = 2.5)
 ```
-where $P$ is the number of covariates (including the intercept) in the mediator/outcome model. For the residual standard devation, a half normal prior distribution with mean zero and scale parameter scale_sd_* is assumed. Currently, the user can only change the scale and location parameters. 
+where $P$ is the number of covariates (including the intercept) in the mediator/outcome model but excluding the exposure and mediator. For the residual standard deviation, a half normal prior distribution with mean zero and scale parameter scale_sd_* is assumed. Currently, the user can only change the scale and location parameters. 
 
 ## References 
 -  McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. \textbf{28}(2): p. 515-531.
