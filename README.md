@@ -55,9 +55,9 @@ bayesgmed_summary(fit1)
 
 The above model assumes the following structure for the outcome and mediator model 
 
-$logit( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) ) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},$
+\eqn{logit( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) ) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},}
 
-$logit(P(M_{i} = 1| A_{i},\mathbf{Z}_{i} ) ) = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i}.$
+\eqn{logit(P(M_{i} = 1| A_{i},\mathbf{Z}_{i} ) ) = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i}.}
 
 Note: BayesGmed currently does not handle intraction. 
 ### Priors
