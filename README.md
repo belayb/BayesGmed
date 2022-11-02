@@ -47,7 +47,7 @@ To estimate the direct and indirect of the exposure on the outcome adjusted for 
 ``` r
 data(example_data)
 fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), dist.y = "binary",
-dist.m = "binary", link.y = "logit", link.m = "logit", data = example_data)
+dist.m = "continuous", link.y = "logit", link.m = "identity", data = example_data)
 
 bayesgmed_summary(fit1)
 
