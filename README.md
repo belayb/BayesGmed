@@ -59,7 +59,7 @@ The above model assumes the following structure for the outcome and mediator mod
 
 \eqn{logit(P(M_{i} = 1| A_{i},\mathbf{Z}_{i} ) ) = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i}.}
 
-Note: BayesGmed currently does not handle intraction. 
+Note: BayesGmed currently does not handle interaction. 
 ### Priors
 
 Currently, a multi-normal, $MVN(\text{location}, \text{scale})$, prior is assigned to all regression parameters where the location and scale parameters are fixed to the following default values. The user can change the location and scale parameters by passing the location and scale parameters of the priors as a list as below 
