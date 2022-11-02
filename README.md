@@ -2,8 +2,8 @@
 
 # BayesGmed
 
-The R package **BayesGmed** implements parametric mediation analysis using the Bayesian g-formula approch.
-In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis. The methodology behind the R-package and a demonstartion of its application can be found on [arxiv] (https://arxiv.org/abs/2210.08499)
+The R package **BayesGmed** implements parametric mediation analysis using the Bayesian g-formula approach.
+In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis. The methodology behind the R-package and a demonstration of its application can be found on [arxiv] (https://arxiv.org/abs/2210.08499)
 The package’s source code is hosted on [GitHub](https://github.com/belayb/BayesGmed/). More information can be found on the **BayesGmed**’s Vignette .
 
 # Install
@@ -40,7 +40,7 @@ devtools::install_github("belayb/BayesGmed")
 
 The **BayesGmed** R-package currently handles continuous outcome – continuous mediator, binary outcome – binary mediator, continuous outcome – binary mediator, and binary outcome – continuous mediator. 
 
-Suppose we are interested in the causal direct and indirect effect of a single exposure $A$ on a binary outcome $Y$ where we have a single continuous mediator $M$. In addition, assume we have two confounding variables $Z=(Z_1,Z_2)$. The example_data corresponding to this scenerio is included with **BayesGmed**. 
+Suppose we are interested in the causal direct and indirect effect of a single exposure $A$ on a binary outcome $Y$ where we have a single continuous mediator $M$. In addition, assume we have two confounding variables $Z=(Z_1,Z_2)$. The example_data corresponding to this scenario is included with **BayesGmed**. 
 
 To estimate the direct and indirect of the exposure on the outcome adjusted for confounder, the anlaysis would follow as below. 
 
@@ -62,7 +62,7 @@ The above model assumes the following structure for the outcome and mediator mod
 Note: BayesGmed currently does not handle intraction. 
 ### Priors
 
-Currently, a multinormal, $MVN(\text{location}, \text{scale})$, prior is assigned to all regression parameters where the location and scale parameters are fixed to the following default values. The user can change the location and scale parameters by passing the location and scale parameters of the priors as a list as below 
+Currently, a multi-normal, $MVN(\text{location}, \text{scale})$, prior is assigned to all regression parameters where the location and scale parameters are fixed to the following default values. The user can change the location and scale parameters by passing the location and scale parameters of the priors as a list as below 
 
 ``` r
 priors <- list(scale_m = 2.5*diag(P+1), 
@@ -75,20 +75,20 @@ priors <- list(scale_m = 2.5*diag(P+1),
 where $P$ is the number of covariates (including the intercept) in the mediator/outcome model but excluding the exposure and mediator. For the residual standard deviation, a half normal prior distribution with mean zero and scale parameter scale_sd_* is assumed. Currently, the user can only change the scale and location parameters. 
 
 ## References 
--  McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. \textbf{28}(2): p. 515-531.
+-  McCandless, L.C. and J.M. Somers, Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis. Statistical Methods in Medical Research, 2019. 28(2): p. 515-531.
 - Comment, L., Coull, B. A., Zigler, C., & Valeri, L. (2019). Bayesian data fusion for unmeasured confounding. arXiv preprint arXiv:1902.10613.
-- Imai, K., L. Keele, and D. Tingley, \emph{A general approach to
-causal mediation analysis.} Psychological methods, 2010. \textbf{15}(4):
-- Keil, A.P., et al., \emph{A Bayesian approach to the g-formula.}
-Statistical methods in medical research, 2018. \textbf{27}(10): p.
+- Imai, K., L. Keele, and D. Tingley, A general approach to
+causal mediation analysis. Psychological methods, 2010. 15(4):
+- Keil, A.P., et al., A Bayesian approach to the g-formula.
+Statistical methods in medical research, 2018. 27(10): p.
 3183-3204.
 
 
 
 ## Contributors
 
-Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK. Co-authors: Mark Lunt, John McBeth, Marcus Beasley, and Gary J Macfarlane. Stan model defination within the package are based on Comment, Leah (2018) Causal inference with the g-formula in Stan. Zenodo.
+Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthritis](https://www.cfe.manchester.ac.uk/), University of Manchester, UK. Co-authors: Mark Lunt, John McBeth, Marcus Beasley, and Gary J Macfarlane. Stan model definition within the package are based on Comment, Leah (2018) Causal inference with the g-formula in Stan.
 
 ## Note
 
-The package is under devlopment. Hence, pull requests and GitHub issues are welcome. Any use of the package has to be done wth care. 
+The package is under development. Hence, pull requests and GitHub issues are welcome. Any use of the package has to be done wth care. 
