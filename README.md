@@ -40,14 +40,14 @@ devtools::install_github("belayb/BayesGmed")
 
 The **BayesGmed** R-package currently handles continuous outcome – continuous mediator, binary outcome – binary mediator, continuous outcome – binary mediator, and binary outcome – continuous mediator. 
 
-Suppose we are interested in the causal direct and indirect effect of a single exposure $A$ on a binary outcome $Y$ where we have a single continuous mediator $M$. In addition, assume we have two confounding variables $Z=(Z_1,Z_2)$. The example_data corresponding to this scenario is included with **BayesGmed**. 
+Suppose we are interested in the causal direct and indirect effect of a single exposure $A$ on a binary outcome $Y$ where we have a single binary mediator $M$. In addition, assume we have two confounding variables $Z=(Z_1,Z_2)$. The example_data corresponding to this scenario is included with **BayesGmed**. 
 
 To estimate the direct and indirect of the exposure on the outcome adjusted for confounder, the anlaysis would follow as below. 
 
 ``` r
 data(example_data)
 fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), dist.y = "binary",
-dist.m = "continuous", link.y = "logit", link.m = "identity", data = example_data)
+dist.m = "binary", link.y = "logit", link.m = "logit", data = example_data)
 
 bayesgmed_summary(fit1)
 
