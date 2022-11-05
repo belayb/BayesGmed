@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Belay Birlie", "Yimer", , "belaybirlie.yimer@manchester.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8621-6539"))
-Description: WAn R package for Bayesian Causal Mediation Analysis using Stan.
+Description: An R package for Bayesian Causal Mediation Analysis using Stan.
 License: `use_mit_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
