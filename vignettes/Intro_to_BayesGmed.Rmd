@@ -13,7 +13,62 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+# Motivation 
+This vignette introduces the R package *BayesGmed*, a package designed for a Bayesian causal mediation analysis in Stan, a probabilistic programming language for Bayesian inference. 
+BayesGmed uses a parametric approach for the specification of the outcome and mediator model, and uses the g-formula approach for estimation. In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis.
 
+# Getting started 
+You can install from Github via devtools
+```{r installation, eval= FALSE}
+devtools::install_gitlab(belayb/BayesGmed)
+```
+
+# Example 
+*BayesGmed* comes with an example data, example_data, 
+which contains a binary outcome $Y$, a single binary mediator $M$, a binary exposure $A$, 
+and two numeric confounding variables $Z = (Z_1, Z_2)$. The first 6 rows of the data is
+visualized below. 
 ```{r setup}
 library(BayesGmed)
+```
+```{r data}
+head(example_data)
+```
+The aim in this example data is to estimate the direct and indirect effect of $A$ on $Y$ adjusting for $Z$. 
+To do this, we may proced as follow. 
+
+\[logit( P(Y_{i} = 1|A_{i},M_{i},\mathbf{Z}_{i}) ) = \alpha_{0} + \mathbf{\alpha}_{Z}^{'}\mathbf{Z}_{i} + \alpha_{A}A_{i} + \alpha_{M}M_{i},\]
+
+\[logit(P(M_{i} = 1| A_{i},\mathbf{Z}_{i} ) ) = \beta_{0} + \mathbf{\beta}_{Z}^{'}\mathbf{Z}_{i} + \beta_{A}A_{i}.\]
+
+To complete the model specification, we assume the following priors for the model parameters. 
+
+$$
+\begin{aligned}
+\beta &\sim MVN(location_m, scale_m)\\
+\alpha &\sim MVN(location_y, scale_y)
+\end{aligned}
+$$
+
+We then need to specify the parameters 
+of the prior distrbutions or assume a hyper-prior. 
+BayesGmed currently only allow fixed values and these values
+can be passed as part of the model call and if not the 
+following defult values will be used 
+
+```{r prior, eval= FALSE}
+
+priors <- list(scale_m = 2.5*diag(P+1), 
+               scale_y = 2.5*diag(P+2),
+               location_m = rep(0, P+1), 
+               location_y = rep(0, P+2))
+```
+
+The model can then be fitted as follow 
+
+```{r model}
+fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), dist.y = "binary",
+dist.m = "binary", link.y = "logit", link.m = "logit", data = example_data)
+
+bayesgmed_summary(fit1)
 ```
