@@ -69,7 +69,7 @@ following parameters:
 priors <- list(
 scale_m = 2.5\emph{diag(P_m) scale_y = 2.5}diag(P_y),
 llocation_m = rep(0, P_m) location_y = rep(0, P_y),
-location_gamma = rep(0.5, 4), scale_gamma = 0.5*diag(4),
+location_gamma = rep(0, 4), scale_gamma = 0.1*diag(4),
 scale_sd_y = 2.5, scale_sd_m = 2.5)
 where P_m is the number of regression parameters (including the intercept) in the mediator model and
 P_y is the number of regression parameters in the outcome model. Note that there are 4 bias parameters
