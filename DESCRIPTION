@@ -1,6 +1,6 @@
 Package: BayesGmed
 Title: An R package for Bayesian Causal Mediation Analysis using Stan
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person("Belay Birlie", "Yimer", , "belaybirlie.yimer@manchester.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8621-6539"))
