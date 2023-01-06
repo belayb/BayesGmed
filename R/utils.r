@@ -36,7 +36,6 @@
 #'
 #' To learn more about the additional parameters, refer to the Stan code
 #' (\code{cat(get_stancode(fit))}).
-#'}
 #'
 #' @author Belay B. Yimer \email{belaybirlie.yimer@manchester.ac.uk}
 #'
