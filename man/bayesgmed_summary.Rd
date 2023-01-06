@@ -38,7 +38,27 @@ A \code{data.frame} summarizing the estimated causal mediation model, including 
 Print a summary of the estimated causal mediation model
 }
 \details{
+After estimating a model with \code{bayesgmed()}, use \code{bayesgmed_summary(fit)} to display the estimated results,
+where \code{fit} is an object containing the fitted model. By default, \code{bayesgmed_summary()} only displays a subset of
+the estimated parameters:
+- \code{NDE_control}: direct effect estimate when the exposure level is set to the control value.
+- \code{NDE_treated}: direct effect estimate when the exposure level is set to the treated value.
+- \code{NIE_control}: mediated effect estimate when the exposure level is set to the control value.
+- \code{NIE_treated}: mediated effect estimate when the exposure level is set to the treated value.
+- \code{ANDE}: average direct effect of X on Y.
+- \code{ANIE}: average indirect effect of X on Y.
+- \code{TE}: the total effect of A on Y.
+To display all estimated parameters where all chains merged, set \code{pars = NULL}. This will print all parameters defined
+in the model definitions, including the most important ones:
+- \code{alphaZ[]}: parameter estimate of the confounders (i.e., X -> Y) relationship, listed in the order they are specified
+in the \code{covariates} argument of \code{bayesgmed()}. \code{alpha[1]} is the intercept.
+- \code{alphaM}: parameter estimate of the M -> Y relationship.
+- \code{alphaA}: parameter estimate of the A -> Y relationship.
+- \code{betaZ}: parameter estimate of the confounders (i.e., X -> M) relationship, listed in the order they are specified
+in the \code{covariates} argument of \code{bayesgmed()}. \code{beta[1]} is the intercept
 
+To learn more about the additional parameters, refer to the Stan code
+(\code{cat(get_stancode(fit))}).
 }
 \author{
 Belay B. Yimer \email{belaybirlie.yimer@manchester.ac.uk}
