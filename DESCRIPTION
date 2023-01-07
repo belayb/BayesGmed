@@ -2,9 +2,24 @@ Package: BayesGmed
 Title: An R package for Bayesian Causal Mediation Analysis using Stan
 Version: 0.0.1
 Authors@R: 
-    person("Belay Birlie", "Yimer", , "belaybirlie.yimer@manchester.ac.uk", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-8621-6539"))
-Description: An R package for Bayesian Causal Mediation Analysis using Stan.
+    c(person(given = "Belay Birlie", 
+           family = "Yimer", 
+           role = c("aut", "cre"),
+           email = "belaybirlie.yimer@manchester.ac.uk",
+           comment = c(ORCID = "0000-0001-8621-6539")),
+    person(given = "Mark",
+           family = "Lunt",
+           role = c("aut")),
+    person(given = "Marcus",
+           family = "Beasley",
+           role = c("aut")), 
+    person(given = " Gary J ",
+           family = "Macfarlane",
+           role = c("aut")), 
+    person(given = "John",
+           family = "McBeth",
+           role = c("aut")))                     
+Description: The R package BayesGmed implements parametric mediation analysis using the Bayesian g-formula approach. In addition to the estimation of causal mediation effects, the package also allows researchers to conduct sensitivity analysis. The methodology behind the R-package and a demonstration of its application can be found at Yimer et al (2022) <doi:10.48550/arXiv.2210.08499>. Stan model definition within the package are based on Comment (2018) <doi:10.5281/zenodo.1285275>.
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
