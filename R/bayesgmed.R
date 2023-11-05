@@ -1,30 +1,28 @@
-#' bayesgmed: Estimate a causal mediation effects
+#' Estimate a causal mediation effects
 #'
-#' Estimates a Bayesian causal mediation model using g-formula approach though Stan.
+#' Estimates various quantities for causal mediation analysis using 'Stan'.
 #' @export
 #' @param data A \code{data.frame} or a \code{tibble} object.
 #' @param outcome a character string indicating the name of the outcome variable.
-#' @param treat a character string indicating the name of the treatment variable. The treatment can be either binary (integer or a two-valued factor) or continuous (numeric).
+#' @param treat a character string indicating the name of the treatment variable. The treatment variable is considered binary and should be coded as 0 for control and 1 for treated.
 #' @param mediator a character string indicating the name of the mediator variable.
 #' @param covariates a character vector indicating the name of the confounding variables.
-#' @param priors A list of named values to be used as the prior scale parameters. See details.
+#' @param priors A list of named values for the prior scale parameters. See details.
 #' @param dist.y a character string indicating the family distribution of the outcome.  E.g., dist.y = "bernoulli" will fit
-#' a logistic regression the outcome.
-#' @param dist.m a character string indicating the family distribution of the mediator  E.g., dist.m = "bernoulli" will fit
-#' a logistic regression the mediator
+#' a logistic regression for the outcome.
+#' @param dist.m a character string indicating the family distribution of the mediator, E.g., dist.m = "bernoulli" will fit
+#' a logistic regression model for the mediator
 #' @param link.y a character string indicating the link function to be used for the outcome model.
 #' @param link.m a character string indicating the link function to be used for the mediator model.
-#' @param control.value The vaue of the treatment variable to be used as a reference level.
-#' @param treat.value The vaue of the treatment variable to be used as a treatment level.
 #' @param ... Other optional parameters passed to \code{rstan::stan()}.
 #'
-#' @return An object of S4 class stanfit, with all its available methods.
+#' @return An object of 'S4' class 'stanfit',  with all its available methods.
 #'
 #' @author Belay Birlie Yimer \email{belaybirlie.yimer@manchester.ac.uk}
 #'
-#' @details Bayesgmed is the main function for estimating causal mediation effects
-#' from several types of data with in the Bayesian framework. We followed the potential
-#' outcome framework for effects definition and the package uses the rstan utility functions
+#' @details This is the main function for estimating causal mediation effects
+#' from several types of data within the Bayesian framework. We followed the potential
+#' outcome framework for effects definition and the package uses the 'rstan' utility functions
 #' for exploring the posterior distribution.
 #'
 #' ## priors
@@ -36,7 +34,7 @@
 #'   location_m = rep(0, P_m) location_y = rep(0, P_y),
 #'  scale_sd_y = 2.5, scale_sd_m = 2.5)
 #' where P_m is the number of regression parameters (including the intercept) in the mediator model and
-#' P_y is the number of regression parameters in the outcome model.  
+#' P_y is the number of regression parameters in the outcome model.    
 #'
 #' @references 
 #' 1. McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. (28)(2): p. 515-531.
@@ -45,8 +43,7 @@
 bayesgmed <- function(outcome, mediator, treat,covariates =NULL,
                      dist.y = "continuous", dist.m ="continuous",
                      link.y ="identity", link.m ="identity",
-                     data,  control.value = 0,
-                     treat.value = 1, priors = NULL, ...){
+                     data,  priors = NULL, ...){
 
   # Check for data
   if (is.null(data)) stop("No data entered")

@@ -1,32 +1,30 @@
-#' bayesgmed_sens: Conduct sensitivity analysis for unmeasured confounder in causal mediation analysis
+#' Conduct sensitivity analysis for unmeasured confounder 
 #'
-#' bayesgmed_sens is used to conduct sensetivity analysis for unmeasured confounder in mediation analysis.
+#' 'bayesgmed_sens' is used to conduct sensitivity analysis for unmeasured confounders in mediation analysis.
 #' @export
 #' @param data A \code{data.frame} or a \code{tibble} object.
 #' @param outcome a character string indicating the name of the outcome variable.
-#' @param treat a character string indicating the name of the treatment variable. The treatment can be either binary (integer or a two-valued factor) or continuous (numeric).
+#' @param treat a character string indicating the name of the treatment variable. The treatment variable is considered binary and should be coded as 0 for control and 1 for treated.
 #' @param mediator a character string indicating the name of the mediator variable.
 #' @param covariates a character vector indicating the name of the confounding variables.
-#' @param priors A list of named values to be used as the prior scale parameters. See details.
+#' @param priors A list of named values for the prior scale parameters. See details.
 #' @param dist.y a character string indicating the family distribution of the outcome.  E.g., dist.y = "bernoulli" will fit
 #' a logistic regression the outcome.
 #' @param dist.m a character string indicating the family distribution of the mediator  E.g., dist.m = "bernoulli" will fit
 #' a logistic regression the mediator
 #' @param link.y a character string indicating the link function to be used for the outcome model.
 #' @param link.m a character string indicating the link function to be used for the mediator model.
-#' @param control.value The vaue of the treatment variable to be used as a reference level.
-#' @param treat.value The vaue of the treatment variable to be used as a treatment level.
 #' @param ... Other optional parameters passed to \code{rstan::stan()}.
 #'
-#' @return An object of S4 class stanfit, with all its available methods.
+#' @return An object of 'S4' class 'stanfit', with all its available methods.
 #'
 #' @author Belay Birlie Yimer \email{belaybirlie.yimer@manchester.ac.uk}
 #'
-#' @details Bayesgmed_sens allows one to conduct a sensitivity analysis for unmeasured confounding 
-#' according to the approach proposed by McCandless LC and Somers JM (2019). This is done by incorporating 
+#' @details Perform a sensitivity analysis for unmeasured confounding 
+#' following the approach proposed by McCandless LC and Somers JM (2019). This is done by incorporating 
 #' uncertainty about unmeasured confounding in the outcome and mediator model through a prior distribution. 
 #' One can control the size of unmeasured confounding by varying the location and scale parameters of the prior 
-#' distribution values for the bias parameter (i.e., gamma). See the Vignette for more detail. 
+#' distribution values for the bias parameter (i.e., gamma). See the Vignette for more details. 
 #' ## priors
 #' Users may pass a list of named values for the priors argument. The values will be used to define
 #' the scale parameter of the respective prior distributions. This list may specify some or all of the
@@ -47,8 +45,7 @@
 bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
                       dist.y = "continuous", dist.m ="continuous",
                       link.y ="identity", link.m ="identity",
-                      data,  control.value = 0,
-                      treat.value = 1, priors = NULL, ...){
+                      data,  priors = NULL, ...){
 
    # Check for data
   if (is.null(data)) stop("No data entered")
