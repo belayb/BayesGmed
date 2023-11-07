@@ -41,6 +41,24 @@
 #' @references 
 #' 1. McCandless, L.C. and J.M. Somers, \emph{Bayesian sensitivity analysis for unmeasured confounding in causal mediation analysis.} Statistical Methods in Medical Research, 2019. (28)(2): p. 515-531.
 #' 2. Comment, L., Coull, B. A., Zigler, C., and Valeri, L. (2019). Bayesian data fusion for unmeasured confounding. arXiv preprint arXiv:1902.10613.
+#' 
+#
+#' @examples
+#' \dontrun{
+#' ## Run example using the example_data
+#' data(example_data)
+#' # priors including for unmeasured single confounder 
+#' priors <- list(scale_m = 2.5*diag(P+1), 
+#               scale_y = 2.5*diag(P+2),
+#               location_m = rep(0, P+1), 
+#               location_y = rep(0, P+2),
+#'              location_gamma = rep(0,4),
+#'              scale_gamma = 0.5*diag(4)))
+#' fit1 <- bayesgmed_sens(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), 
+#' dist.y = "binary", dist.m = "binary", link.y = "logit", link.m = "logit", priors = priors,  
+#' data = example_data)
+#' bayesgmed_summary(fit1)
+#' }
 
 bayesgmed_sens <- function(outcome, mediator, treat,covariates =NULL,
                       dist.y = "continuous", dist.m ="continuous",

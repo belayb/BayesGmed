@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesgmed.R
 \name{bayesgmed}
 \alias{bayesgmed}
-\title{bayesgmed: Estimate a causal mediation effects}
+\title{Estimate a causal mediation effects}
 \usage{
 bayesgmed(
   outcome,
@@ -14,8 +14,6 @@ bayesgmed(
   link.y = "identity",
   link.m = "identity",
   data,
-  control.value = 0,
-  treat.value = 1,
   priors = NULL,
   ...
 )
@@ -25,15 +23,15 @@ bayesgmed(
 
 \item{mediator}{a character string indicating the name of the mediator variable.}
 
-\item{treat}{a character string indicating the name of the treatment variable. The treatment can be either binary (integer or a two-valued factor) or continuous (numeric).}
+\item{treat}{a character string indicating the name of the treatment variable. The treatment variable is considered binary and should be coded as 0 for control and 1 for treated.}
 
 \item{covariates}{a character vector indicating the name of the confounding variables.}
 
 \item{dist.y}{a character string indicating the family distribution of the outcome.  E.g., dist.y = "bernoulli" will fit
-a logistic regression the outcome.}
+a logistic regression for the outcome.}
 
-\item{dist.m}{a character string indicating the family distribution of the mediator  E.g., dist.m = "bernoulli" will fit
-a logistic regression the mediator}
+\item{dist.m}{a character string indicating the family distribution of the mediator, E.g., dist.m = "bernoulli" will fit
+a logistic regression model for the mediator}
 
 \item{link.y}{a character string indicating the link function to be used for the outcome model.}
 
@@ -41,24 +39,20 @@ a logistic regression the mediator}
 
 \item{data}{A \code{data.frame} or a \code{tibble} object.}
 
-\item{control.value}{The vaue of the treatment variable to be used as a reference level.}
-
-\item{treat.value}{The vaue of the treatment variable to be used as a treatment level.}
-
-\item{priors}{A list of named values to be used as the prior scale parameters. See details.}
+\item{priors}{A list of named values for the prior scale parameters. See details.}
 
 \item{...}{Other optional parameters passed to \code{rstan::stan()}.}
 }
 \value{
-An object of S4 class stanfit, with all its available methods.
+An object of 'S4' class 'stanfit',  with all its available methods.
 }
 \description{
-Estimates a Bayesian causal mediation model using g-formula approach though Stan.
+Estimates various quantities for causal mediation analysis using 'Stan'.
 }
 \details{
-Bayesgmed is the main function for estimating causal mediation effects
-from several types of data with in the Bayesian framework. We followed the potential
-outcome framework for effects definition and the package uses the rstan utility functions
+This is the main function for estimating causal mediation effects
+from several types of data within the Bayesian framework. We followed the potential
+outcome framework for effects definition and the package uses the 'rstan' utility functions
 for exploring the posterior distribution.
 \subsection{priors}{
 
@@ -71,6 +65,22 @@ location_m = rep(0, P_m) location_y = rep(0, P_y),
 scale_sd_y = 2.5, scale_sd_m = 2.5)
 where P_m is the number of regression parameters (including the intercept) in the mediator model and
 P_y is the number of regression parameters in the outcome model.
+}
+}
+\examples{
+\dontrun{
+## Run example using the example_data
+data(example_data)
+fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"),
+ dist.y = "binary", dist.m = "binary", link.y = "logit", link.m = "logit", data = example_data)
+bayesgmed_summary(fit1)
+
+# With priors
+priors <- list(scale_m = 2.5*diag(P+1), 
+fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), 
+dist.y = "binary", dist.m = "binary", link.y = "logit", link.m = "logit", priors = priors,  
+data = example_data)
+bayesgmed_summary(fit1)
 }
 }
 \references{
