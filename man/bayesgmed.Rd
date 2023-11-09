@@ -68,7 +68,7 @@ P_y is the number of regression parameters in the outcome model.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 ## Run example using the example_data
 data(example_data)
 fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"),
@@ -76,7 +76,9 @@ fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z
 bayesgmed_summary(fit1)
 
 # With priors
-priors <- list(scale_m = 2.5*diag(P+1), 
+P <- 3 # number of covariates plus the intercept term 
+priors <- list(scale_m = 2.5*diag(P+1), scale_y = 2.5*diag(P+2), 
+location_m = rep(0, P+1), location_y = rep(0, P+2))
 fit1 <- bayesgmed(outcome = "Y", mediator =  "M", treat = "A", covariates = c("Z1", "Z2"), 
 dist.y = "binary", dist.m = "binary", link.y = "logit", link.m = "logit", priors = priors,  
 data = example_data)

@@ -57,7 +57,7 @@ can be passed as part of the model call and if not the
 following defult values will be used 
 
 ```{r prior, eval= FALSE}
-
+P <- 3 # number of covariates plus the intercept term 
 priors <- list(scale_m = 2.5*diag(P+1), 
                scale_y = 2.5*diag(P+2),
                location_m = rep(0, P+1), 
