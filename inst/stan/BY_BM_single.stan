@@ -8,9 +8,9 @@ data {
   // observed treatment
   vector[N] A;
   // observed mediator
-  int<lower=0,upper=1> M[N];
+  array[N] int<lower=0,upper=1> M;
   // outcome
-  int<lower=0,upper=1> Y[N];
+  array[N] int<lower=0,upper=1> Y;
   // mean of regression priors
   vector[P + 2] location_y;
   vector[P + 1] location_m;
