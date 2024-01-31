@@ -1,3 +1,7 @@
+# BayesGmed 0.0.3
+
+* Fix deprecated syntax.
+
 # BayesGmed 0.0.2
 
 * Fixed executable example code.
