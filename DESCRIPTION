@@ -1,11 +1,11 @@
 Package: BayesGmed
 Title: Bayesian Causal Mediation Analysis using 'Stan'
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
     c(person(given = "Belay Birlie", 
            family = "Yimer", 
            role = c("aut", "cre"),
-           email = "belaybirlie.yimer@manchester.ac.uk",
+           email = "belayabyimer@gmail.com",
            comment = c(ORCID = "0000-0001-8621-6539")),
     person(given = "Mark",
            family = "Lunt",
@@ -22,7 +22,7 @@ Authors@R:
 Description: Performs parametric mediation analysis using the Bayesian g-formula approach for binary and continuous outcomes. The methodology is based on Comment (2018) <doi:10.5281/zenodo.1285275> and a demonstration of its application can be found at Yimer et al. (2022) <doi:10.48550/arXiv.2210.08499>. 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.1
 Biarch: true
 Depends: 
     R (>= 3.4.0)

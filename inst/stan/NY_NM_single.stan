@@ -49,8 +49,8 @@ transformed parameters {
 }
 model {
   // priors on causal coefficients weakly informative for binary exposure
-  alpha ~ multi_normal(location_m, scale_m);
-  beta ~ multi_normal(location_y, scale_y);
+  alpha ~ multi_normal(location_y, scale_y);
+  beta ~ multi_normal(location_m, scale_m);
   // prior for the residual standrd devation of the mediator model
   target += normal_lpdf(sigma_y | 0, scale_sd_y) - normal_lcdf(0 | 0, scale_sd_y);
   target += normal_lpdf(sigma_m | 0, scale_sd_m) - normal_lcdf(0 | 0, scale_sd_m);
