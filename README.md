@@ -92,3 +92,7 @@ Maintained by Belay Birlie Yimer of the [Centre for Epidemiology Versus Arthriti
 ## Note
 
 The package is under development. Hence, pull requests and GitHub issues are welcome. Any use of the package has to be done wth care. 
+
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/belayb/BayesGmed/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/belayb/BayesGmed/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
